@@ -7,7 +7,7 @@
       </div>
 
       <!-- elementUI的表单 -->
-      <el-form class="form" :model="LoginForm" :rules="rules" ref="LoginFormWrap" label-width="0px" style="width: 100%; padding: 10%" size="large">
+      <el-form class="form" :model="LoginForm" :rules="rules" ref="LoginFormRef" label-width="0px" style="width: 100%; padding: 10%" size="large">
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input v-model="LoginForm.username" prefix-icon="el-icon-user-solid"></el-input>
@@ -40,26 +40,25 @@ export default {
         // 注意这里的名字要跟data里面的对应
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 0, max: 10, message: '最大长度为 10 个字符', trigger: 'blur' }
+          { min: 3, max: 10, message: '长度为3-10个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 0, max: 10, message: '最大长度为 10 个字符', trigger: 'blur' }
+          { min: 3, max: 10, message: '长度为3-10个字符', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
     onSubmit () {
-      console.log('submit!')
+      // console.log('submit!')
     },
     reset () {
-      this.LoginForm.password = ''
-      this.LoginForm.username = ''
+      this.$refs.LoginFormRef.resetFields()
     },
     login () {
       // 预校验方法 里面是一个回调函数
-      this.$refs.LoginFormWrap.validate(async valid => {
+      this.$refs.LoginFormRef.validate(async valid => {
         if (!valid) return false
         else {
           const { data: res } = await this.$http.post('login', this.LoginForm)
@@ -68,7 +67,7 @@ export default {
           }
           if (res.meta.status === 200) {
             this.$message.success('登录成功')
-            console.log(res)
+            // console.log(res)
             // 登录成功后保存token到本地 方便后续管理登录状态
             window.sessionStorage.setItem('token', res.data.token)
             // const token = window.sessionStorage.getItem('token')

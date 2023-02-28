@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginCom from '../components/LoginCom.vue'
 import HomeCom from '../components/HomeCom.vue'
+import WelcomeCom from '../components/WelcomeCom.vue'
+import UsersCom from '../components/UsersCom.vue'
 import Test from '../components/TestTest.vue'
 
 Vue.use(VueRouter)
@@ -25,7 +27,21 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: HomeCom
+    component: HomeCom,
+    redirect: '/welcome', // 重定向！！！
+    children: [
+      {
+        // 孩子组件！！
+        path: '/welcome',
+        name: 'welcome',
+        component: WelcomeCom
+      },
+      {
+        path: '/users',
+        name: 'users',
+        component: UsersCom
+      }
+    ]
   }
   // {
   //   path: '/about',
