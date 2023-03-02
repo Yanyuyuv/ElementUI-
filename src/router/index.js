@@ -4,6 +4,8 @@ import LoginCom from '../components/LoginCom.vue'
 import HomeCom from '../components/HomeCom.vue'
 import WelcomeCom from '../components/WelcomeCom.vue'
 import UsersCom from '../components/UsersCom.vue'
+import RolesCom from '../components/RolesCom.vue'
+import RightsCom from '../components/RightsCom.vue'
 import Test from '../components/TestTest.vue'
 
 Vue.use(VueRouter)
@@ -40,6 +42,16 @@ const routes = [
         path: '/users',
         name: 'users',
         component: UsersCom
+      },
+      {
+        path: '/roles',
+        name: 'roles',
+        component: RolesCom
+      },
+      {
+        path: '/rights',
+        name: 'rights',
+        component: RightsCom
       }
     ]
   }

@@ -130,6 +130,7 @@
                 type="warning"
                 icon="el-icon-user-solid"
                 size="mini"
+                @click="changeRole(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -178,6 +179,43 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="deleteDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="deleteFormCheck">确 定</el-button>
+        </span>
+      </el-dialog>
+
+      <!-- 分配角色对话框弹窗 -->
+      <el-dialog
+        title="分配角色"
+        :visible.sync="changeRoleDialogVisible"
+        width="50%"
+        center
+        :show-close="false"
+      >
+        <el-form
+          label-width="100px"
+          ref="roleFormRef"
+          :rules="addFormRules"
+          :model="roleForm"
+        >
+          <el-form-item label="用户名">
+            <el-input disabled v-model="roleForm.username"></el-input>
+          </el-form-item>
+          <el-form-item label="当前角色">
+            <el-input disabled v-model="roleForm.nowRoleName"></el-input>
+          </el-form-item>
+          <el-form-item label="分配角色">
+            <el-select v-model="roleForm.rid" placeholder="请选择角色">
+              <el-option
+                v-for="option in rolesList"
+                :key="option.id"
+                :label="option.roleName"
+                :value="option.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="resetForm('roleForm')">取 消</el-button>
+          <el-button type="primary" @click="postRoleForm">确 定</el-button>
         </span>
       </el-dialog>
 
@@ -278,14 +316,23 @@ export default {
         email: '',
         mobile: ''
       },
+      // 分配角色表单
+      roleForm: {
+        id: '',
+        rid: '',
+        username: '',
+        nowRoleName: ''
+      },
       // 删除用户的ID
       deleteID: 0,
       userList: [],
+      rolesList: [],
       total: 0,
       search: '', // 搜索框
       addFormDialogVisible: false, // 添加用户对话框
       changeFormDialogVisible: false, // 编辑用户信息对话框
-      deleteDialogVisible: false // 删除确认弹窗
+      deleteDialogVisible: false, // 删除确认弹窗
+      changeRoleDialogVisible: false // 分配角色弹窗
     }
   },
   created () {
@@ -293,6 +340,7 @@ export default {
     this.getUserList()
   },
   methods: {
+    // 获取用户信息
     async getUserList () {
       const { data: res } = await this.$http.get('users', {
         params: this.queryInfo
@@ -305,6 +353,18 @@ export default {
       // 获取成功
       this.userList = res.data.users
       this.total = res.data.total
+    },
+    // 获取角色列表
+    async getRolesList () {
+      const { data: res } = await this.$http.get('roles')
+      // 获取失败
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取角色列表失败')
+      }
+      // console.log(res)
+      // 获取成功
+      this.rolesList = res.data
+      // console.log(this.rolesList)
     },
     // 搜索按钮
     async searchBtn () {
@@ -361,6 +421,10 @@ export default {
         this.$refs.changeFormRef.resetFields()
         this.changeFormDialogVisible = false
       }
+      if (formName === 'roleForm') {
+        this.$refs.roleFormRef.resetFields()
+        this.changeRoleDialogVisible = false
+      }
       // this.$refs.Ref.resetFields()
       // this.$refs.addFormRef.resetFields()
       // this.addFormDialogVisible = false
@@ -391,6 +455,17 @@ export default {
         this.$message.success('删除成功')
         this.getUserList()
       }
+    },
+    // 分配角色按钮
+    changeRole (row) {
+      this.getRolesList()
+      // console.log(row)
+      this.roleForm.id = row.id // 角色ID
+      this.roleForm.username = row.username
+      this.roleForm.nowRoleName = row.role_name
+      this.roleForm.rid = ''
+      this.changeRoleDialogVisible = true
+      // console.log(row)
     },
     postAddForm () {
       this.$refs.addFormRef.validate(async (bollean, object) => {
@@ -444,6 +519,29 @@ export default {
           // }
         }
       })
+    },
+    async postRoleForm () {
+      // console.log(this.roleForm.rid)
+      if (this.roleForm.roleName === '') {
+        this.$message.error('请正确完成表格')
+      } else {
+        // 传参给服务器修改信息
+        const { data: res } = await this.$http.put(
+          `users/${this.roleForm.id}/role`,
+          {
+            rid: this.roleForm.rid
+          }
+        )
+        if (res.meta.status !== 200) {
+          return this.$message.error(res.meta.msg)
+        } else {
+          // console.log(res)
+          // 创建成功： 关闭对话框 弹窗 更新用户数据
+          this.changeRoleDialogVisible = false
+          this.$message.success('分配成功')
+          this.getUserList()
+        }
+      }
     }
   }
 }

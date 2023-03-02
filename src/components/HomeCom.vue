@@ -41,7 +41,7 @@
                 :index="'/' + subItem.path"
                 v-for="subItem in item.children"
                 :key="subItem.id"
-                @click = "menuIndex('/' + subItem.path)"
+                @click="menuIndex('/' + subItem.path)"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -82,8 +82,13 @@ export default {
   // 然后拿到记录的index 保持菜单状态
   created () {
     this.getMenuList()
-    this.activePath = window.sessionStorage.getItem('activePath')
-    // this.$router.push(this.activePath)
+  },
+  updated () {
+    // 网上搜的获取当前路由地址的方法
+    const url = location.href
+    const route = url.substring(url.lastIndexOf('/') + 1)
+    this.menuIndex('/' + route)
+    // console.log(route)
   },
   methods: {
     exit () {
@@ -97,6 +102,7 @@ export default {
     handleClose (key, keyPath) {
       // console.log(key, keyPath)
     },
+    // 获取菜单数据
     async getMenuList () {
       // 获取菜单数据
       const { data: res } = await this.$http.get('menus')
@@ -106,11 +112,13 @@ export default {
       this.menulist = res.data
       // console.log(this.menulist)
     },
+    // 菜单折叠触发
     toggleCollapse () {
       // 菜单折叠
       this.isCollapse = !this.isCollapse
     },
-    menuIndex (activePath) { // 点击二级菜单记录Index
+    // 点击二级菜单记录Index
+    menuIndex (activePath) {
       window.sessionStorage.setItem('activePath', activePath)
       this.activePath = window.sessionStorage.getItem('activePath')
       // console.log(path)
