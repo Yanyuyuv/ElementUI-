@@ -127,7 +127,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 #HomeContainer {
   width: 100%;
   height: 100%;
@@ -167,5 +167,16 @@ export default {
 }
 .el-main {
   background-color: #eaedf1;
+}
+
+// 孩子组件统一样式
+.el-breadcrumb {
+  margin-bottom: 12px;
+}
+.el-card {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+.el-table {
+  margin-top: 12px;
 }
 </style>

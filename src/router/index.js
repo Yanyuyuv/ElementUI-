@@ -6,6 +6,7 @@ import WelcomeCom from '../components/WelcomeCom.vue'
 import UsersCom from '../components/UsersCom.vue'
 import RolesCom from '../components/RolesCom.vue'
 import RightsCom from '../components/RightsCom.vue'
+import GoodsCateCom from '../components/GoodsCateCom.vue'
 import Test from '../components/TestTest.vue'
 
 Vue.use(VueRouter)
@@ -52,6 +53,11 @@ const routes = [
         path: '/rights',
         name: 'rights',
         component: RightsCom
+      },
+      {
+        path: '/categories',
+        name: 'categories',
+        component: GoodsCateCom
       }
     ]
   }

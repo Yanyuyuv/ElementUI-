@@ -11,7 +11,7 @@
 
     <!-- 卡片 -->
     <el-card class="box-card">
-      <!-- 搜索框 -->
+      <!-- 添加角色按钮 -->
       <el-row :gutter="20">
         <el-col :span="4">
           <el-button type="primary" @click="addFormDialogVisible = true"
@@ -482,6 +482,7 @@ export default {
         }
       })
     },
+    // 角色授权
     async postPower () {
       // console.log('要开始找服务器分配权限了')
       // ！！！！！通过请求体发送参数
@@ -554,15 +555,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-breadcrumb {
-  margin-bottom: 12px;
-}
-.el-card {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-.el-table {
-  margin-top: 12px;
-}
 //权限标签栅格布局
 .powerTagLeft {
   border-top: 1px rgb(218, 222, 230) solid;
