@@ -7,6 +7,8 @@ import UsersCom from '../components/UsersCom.vue'
 import RolesCom from '../components/RolesCom.vue'
 import RightsCom from '../components/RightsCom.vue'
 import GoodsCateCom from '../components/GoodsCateCom.vue'
+import GoodsParamsCom from '../components/GoodsParamsCom.vue'
+import GoodsCom from '../components/GoodsCom.vue'
 import Test from '../components/TestTest.vue'
 
 Vue.use(VueRouter)
@@ -58,6 +60,16 @@ const routes = [
         path: '/categories',
         name: 'categories',
         component: GoodsCateCom
+      },
+      {
+        path: '/params',
+        name: 'params',
+        component: GoodsParamsCom
+      },
+      {
+        path: '/goods',
+        name: 'goods',
+        component: GoodsCom
       }
     ]
   }

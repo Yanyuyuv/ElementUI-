@@ -385,7 +385,7 @@ export default {
       // 获取成功
       this.cateList = res.data.result
       this.total = res.data.total
-      console.log(this.cateList)
+      // console.log(this.cateList)
       //   console.log(res)
       // console.log(this.rolesList)
       //   this.total = this.rolesList.length
